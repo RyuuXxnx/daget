@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Error</title>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: monospace;
+      white-space: pre;
+      font-size: 16px;
+      padding: 20px;
+      animation: flicker 0.3s infinite alternate;
+    }@keyframes flicker {
+  0% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+  </style>
+</head>
+<body>
+  <script>
+    // Play beep sound repeatedly
+    const beep = () => {
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = 800;
+      osc.type = "square";
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    };setInterval(() => {
+  beep();
+  alert("System Error! Code: 0x80070057");
+}, 3000);
+
+// Simulated terminal messages
+const lines = [
+  "[ERROR] Fatal exception occurred...",
+  "[SYSTEM] Memory access violation...",
+  "[WARNING] Unknown behavior detected...",
+  "[CRITICAL] Kernel panic: corrupted stack detected...",
+  "[INFO] Attempting auto-repair..."
+];
+
+let index = 0;
+setInterval(() => {
+  const line = document.createElement("div");
+  line.textContent = lines[index % lines.length];
+  document.body.appendChild(line);
+  index++;
+}, 1000);
+
+  </script>
+</body>
+</html>
